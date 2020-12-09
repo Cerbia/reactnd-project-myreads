@@ -1,11 +1,12 @@
 import React, {Component} from 'react'
 import { Link } from "react-router-dom";
 import * as BooksAPI from './BooksAPI'
+import ShelfChanger from "./ShelfChanger";
 
 class BookList extends Component {
 
     render(){
-        const { reading, wantTo, read } = this.props;
+        const { books } = this.props;
         return (
             <div className="list-books">
                 <div className="list-books-title">
@@ -17,20 +18,12 @@ class BookList extends Component {
                             <h2 className="bookshelf-title">Currently Reading</h2>
                             <div className="bookshelf-books">
                                 <ol className="books-grid">
-                                    {reading.map( book =>
+                                    {books.filter(book => book.shelf == 'currentlyReading').map( book =>
                                         <li>
                                             <div className="book">
                                                 <div className="book-top">
-                                                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `${book.cover}` }}></div>
-                                                    <div className="book-shelf-changer">
-                                                        <select>
-                                                            <option value="move" disabled>Move to...</option>
-                                                            <option value="currentlyReading">Currently Reading</option>
-                                                            <option value="wantToRead">Want to Read</option>
-                                                            <option value="read">Read</option>
-                                                            <option value="none">None</option>
-                                                        </select>
-                                                    </div>
+                                                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
+                                                    <ShelfChanger/>
                                                 </div>
                                                 <div className="book-title">{book.title}</div>
                                                 <div className="book-authors">{book.authors}</div>
@@ -44,20 +37,12 @@ class BookList extends Component {
                             <h2 className="bookshelf-title">Want to Read</h2>
                             <div className="bookshelf-books">
                                 <ol className="books-grid">
-                                    {wantTo.map( book =>
+                                    {books.filter(book => book.shelf == 'wantToRead').map( book =>
                                         <li>
                                             <div className="book">
                                                 <div className="book-top">
-                                                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `${book.cover}` }}></div>
-                                                    <div className="book-shelf-changer">
-                                                        <select>
-                                                            <option value="move" disabled>Move to...</option>
-                                                            <option value="currentlyReading">Currently Reading</option>
-                                                            <option value="wantToRead">Want to Read</option>
-                                                            <option value="read">Read</option>
-                                                            <option value="none">None</option>
-                                                        </select>
-                                                    </div>
+                                                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
+                                                    <ShelfChanger/>
                                                 </div>
                                                 <div className="book-title">{book.title}</div>
                                                 <div className="book-authors">{book.authors}</div>
@@ -71,20 +56,12 @@ class BookList extends Component {
                             <h2 className="bookshelf-title">Read</h2>
                             <div className="bookshelf-books">
                                 <ol className="books-grid">
-                                    {read.map( book =>
+                                    {books.filter(book => book.shelf == 'read').map( book =>
                                         <li>
                                             <div className="book">
                                                 <div className="book-top">
-                                                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `${book.cover}` }}></div>
-                                                    <div className="book-shelf-changer">
-                                                        <select>
-                                                            <option value="move" disabled>Move to...</option>
-                                                            <option value="currentlyReading">Currently Reading</option>
-                                                            <option value="wantToRead">Want to Read</option>
-                                                            <option value="read">Read</option>
-                                                            <option value="none">None</option>
-                                                        </select>
-                                                    </div>
+                                                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
+                                                    <ShelfChanger/>
                                                 </div>
                                                 <div className="book-title">{book.title}</div>
                                                 <div className="book-authors">{book.authors}</div>
