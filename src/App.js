@@ -1,6 +1,6 @@
 import React from 'react'
 import { Route, Link } from 'react-router-dom'
-import BookList from "./BookList";
+import MyLibrary from "./MyLibrary";
 import SearchPage from "./SearchPage";
 import * as BooksApi from './BooksAPI'
 
@@ -10,9 +10,14 @@ class BooksApp extends React.Component {
     // TODO: Sprawdzić działanie wszystkich funkcji w BooksAPI
     state = {
         books: [],
+        searchValue: ''
     }
 
     componentDidMount() {
+        this.fetchBooks();
+    }
+
+    fetchBooks = () => {
         BooksApi.getAll().then((data)=> {
             this.setState(() => ({
                 books: data
@@ -20,14 +25,26 @@ class BooksApp extends React.Component {
         })
     }
 
+    onHandleInputChange = (value) =>{
+        this.setState(()=>({
+            searchValue: value,
+        }));
+    }
+
+    onChangeShelf = (book, shelf) => {
+        BooksApi.update(book, shelf).then( (data) => {
+            this.fetchBooks();
+        })
+    }
+
     render() {
     return (
       <div className="app">
         <Route exact path='/' render={() => (
-            <BookList books={this.state.books}/>
+            <MyLibrary books={this.state.books} onChangeShelf={this.onChangeShelf}/>
         )} />
         <Route path='/search' render={(history) => (
-            <SearchPage/>
+            <SearchPage searchValue={this.state.searchValue} onHandleInputChange={this.onHandleInputChange}/>
         )} />
       </div>
     )
