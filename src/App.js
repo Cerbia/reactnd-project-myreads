@@ -9,8 +9,7 @@ import './App.css'
 class BooksApp extends React.Component {
     // TODO: Sprawdzić działanie wszystkich funkcji w BooksAPI
     state = {
-        books: [],
-        searchValue: ''
+        books: []
     }
 
     componentDidMount() {
@@ -23,12 +22,6 @@ class BooksApp extends React.Component {
                 books: data
             }))
         })
-    }
-
-    onHandleInputChange = (value) =>{
-        this.setState(()=>({
-            searchValue: value,
-        }));
     }
 
     onChangeShelf = (book, shelf) => {
@@ -44,7 +37,7 @@ class BooksApp extends React.Component {
             <MyLibrary books={this.state.books} onChangeShelf={this.onChangeShelf}/>
         )} />
         <Route path='/search' render={(history) => (
-            <SearchPage searchValue={this.state.searchValue} onHandleInputChange={this.onHandleInputChange}/>
+            <SearchPage booksOnShelves={this.state.books} onChangeShelf={this.onChangeShelf}/>
         )} />
       </div>
     )

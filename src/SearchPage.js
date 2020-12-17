@@ -1,10 +1,41 @@
 import React, {Component} from 'react'
+import * as BooksApi from "./BooksAPI";
+import Book from "./Book";
+
+//TODO:: Unhandled Rejection (TypeError): books.map is not a function TYPING: "in"
+//TODO: routing
 
 class SearchPage extends Component {
 
-    handleChange = (e) => {
-        this.props.onHandleInputChange(e.target.value);
+    state = {
+        search: [],
+        searchValue: '',
     }
+
+    handleChange = (searchValue) => {
+        this.setState(() => ({
+            searchValue,
+        }));
+        if(searchValue.length > 0){
+            BooksApi.search(searchValue).then( books => {
+                const categorizedBooks = books.map(book => {
+                    book.shelf = 'none';
+                    const myBook = this.props.booksOnShelves.filter(shelfBook => book.id === shelfBook.id);
+                    return myBook[0] ? myBook[0] : book;
+                });
+                this.setState(() => ({
+                    search: categorizedBooks,
+                }))
+            })
+            console.log(this.state);
+        } else {
+            this.setState(() => ({
+                search: [],
+            }))
+        }
+        console.log('this.state.search', this.state.search[0]);
+    }
+
     render(){
         const { searchValue } = this.props;
         return (
@@ -23,14 +54,20 @@ class SearchPage extends Component {
                         <input
                             type="text"
                             placeholder="Search by title or author"
-                            onChange={this.handleChange}
-                            value={searchValue}
+                            onChange={(e)=>this.handleChange(e.target.value)}
+                            value={this.state.searchValue}
                         />
 
                     </div>
                 </div>
                 <div className="search-books-results">
-                    <ol className="books-grid"></ol>
+                    <ol className="books-grid">
+                        {this.state.search.map( book =>
+                            <li key={book.id}>
+                                <Book book={book} onChangeShelf={this.props.onChangeShelf}/>
+                            </li>
+                        )}
+                    </ol>
                 </div>
             </div>
         );
