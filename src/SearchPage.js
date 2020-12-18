@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import * as BooksApi from "./BooksAPI";
 import Book from "./Book";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
 class SearchPage extends Component {
 
@@ -11,6 +12,7 @@ class SearchPage extends Component {
     }
 
     handleChange = (searchValue) => {
+        const { booksOnShelves } = this.props
         this.setState(() => ({
             searchValue,
         }));
@@ -19,7 +21,7 @@ class SearchPage extends Component {
                 if(books.length>0){
                     const categorizedBooks = books.map(book => {
                         book.shelf = 'none';
-                        const myBook = this.props.booksOnShelves.filter(shelfBook => book.id === shelfBook.id);
+                        const myBook = booksOnShelves.filter(shelfBook => book.id === shelfBook.id);
                         return myBook[0] ? myBook[0] : book;
                     });
                     this.setState(() => ({
@@ -27,7 +29,6 @@ class SearchPage extends Component {
                     }))
                 }
             })
-            console.log(this.state);
         } else {
             this.setState(() => ({
                 search: [],
@@ -36,7 +37,9 @@ class SearchPage extends Component {
     }
 
     render(){
-        const { searchValue } = this.props;
+        const { searchValue, search } = this.state;
+        const { onChangeShelf } = this.props;
+
         return (
             <div className="search-books">
                 <div className="search-books-bar">
@@ -59,16 +62,16 @@ class SearchPage extends Component {
                             type="text"
                             placeholder="Search by title or author"
                             onChange={(e)=>this.handleChange(e.target.value)}
-                            value={this.state.searchValue}
+                            value={searchValue}
                         />
 
                     </div>
                 </div>
                 <div className="search-books-results">
                     <ol className="books-grid">
-                        {this.state.search.map( book =>
+                        {search.map( book =>
                             <li key={book.id}>
-                                <Book book={book} onChangeShelf={this.props.onChangeShelf}/>
+                                <Book book={book} onChangeShelf={onChangeShelf}/>
                             </li>
                         )}
                     </ol>
@@ -77,5 +80,10 @@ class SearchPage extends Component {
         );
     }
 }
+
+SearchPage.propTypes = {
+    booksOnShelves: PropTypes.array,
+    onChangeShelf: PropTypes.func,
+};
 
 export default SearchPage

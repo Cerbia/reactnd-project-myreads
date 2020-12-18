@@ -5,6 +5,7 @@ class Book extends Component {
 
     render() {
         const { book, onChangeShelf } = this.props;
+
         return (
             <div className="book">
                 <div className="book-top">
@@ -28,6 +29,7 @@ class Book extends Component {
 
 Book.propTypes = {
     book: PropTypes.object,
+    onChangeShelf: PropTypes.func,
 };
 
 export default Book

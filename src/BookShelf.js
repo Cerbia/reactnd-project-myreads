@@ -21,7 +21,7 @@ class BookShelf extends Component {
                 <h2 className="bookshelf-title">{shelfName}</h2>
                 <div className="bookshelf-books">
                     <ol className="books-grid">
-                        {books.filter(book => book.shelf == shelf).map( book =>
+                        {books.filter(book => book.shelf === shelf).map( book =>
                             <li key={book.id}>
                                 <Book book={book} onChangeShelf={onChangeShelf}/>
                             </li>
@@ -35,7 +35,8 @@ class BookShelf extends Component {
 
 BookShelf.propTypes = {
     books: PropTypes.array,
-    shelf: PropTypes.string
+    shelf: PropTypes.string,
+    onChangeShelf: PropTypes.func,
 };
 
 export default BookShelf
