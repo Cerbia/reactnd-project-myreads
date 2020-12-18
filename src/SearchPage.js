@@ -1,9 +1,7 @@
 import React, {Component} from 'react'
 import * as BooksApi from "./BooksAPI";
 import Book from "./Book";
-
-//TODO:: Unhandled Rejection (TypeError): books.map is not a function TYPING: "in"
-//TODO: routing
+import {Link} from "react-router-dom";
 
 class SearchPage extends Component {
 
@@ -18,14 +16,16 @@ class SearchPage extends Component {
         }));
         if(searchValue.length > 0){
             BooksApi.search(searchValue).then( books => {
-                const categorizedBooks = books.map(book => {
-                    book.shelf = 'none';
-                    const myBook = this.props.booksOnShelves.filter(shelfBook => book.id === shelfBook.id);
-                    return myBook[0] ? myBook[0] : book;
-                });
-                this.setState(() => ({
-                    search: categorizedBooks,
-                }))
+                if(books.length>0){
+                    const categorizedBooks = books.map(book => {
+                        book.shelf = 'none';
+                        const myBook = this.props.booksOnShelves.filter(shelfBook => book.id === shelfBook.id);
+                        return myBook[0] ? myBook[0] : book;
+                    });
+                    this.setState(() => ({
+                        search: categorizedBooks,
+                    }))
+                }
             })
             console.log(this.state);
         } else {
@@ -33,7 +33,6 @@ class SearchPage extends Component {
                 search: [],
             }))
         }
-        console.log('this.state.search', this.state.search[0]);
     }
 
     render(){
@@ -41,7 +40,12 @@ class SearchPage extends Component {
         return (
             <div className="search-books">
                 <div className="search-books-bar">
-                    <button className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</button>
+                    <Link
+                        to='/'
+                        className='add-contact'
+                    >
+                        <button className="close-search">Close</button>
+                    </Link>
                     <div className="search-books-input-wrapper">
                         {/*
                     NOTES: The search from BooksAPI is limited to a particular set of search terms.

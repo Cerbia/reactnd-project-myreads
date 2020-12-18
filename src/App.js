@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Link } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 import MyLibrary from "./MyLibrary";
 import SearchPage from "./SearchPage";
 import * as BooksApi from './BooksAPI'
@@ -7,7 +7,7 @@ import * as BooksApi from './BooksAPI'
 import './App.css'
 
 class BooksApp extends React.Component {
-    // TODO: Sprawdzić działanie wszystkich funkcji w BooksAPI
+
     state = {
         books: []
     }
