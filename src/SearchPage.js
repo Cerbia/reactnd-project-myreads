@@ -3,6 +3,7 @@ import * as BooksApi from "./BooksAPI";
 import Book from "./Book";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import { debounce } from 'throttle-debounce';
 
 class SearchPage extends Component {
 
@@ -18,6 +19,7 @@ class SearchPage extends Component {
         }));
         if(searchValue.length > 0){
             BooksApi.search(searchValue).then( books => {
+                console.log('books', books);
                 if(books.length>0){
                     const categorizedBooks = books.map(book => {
                         book.shelf = 'none';
@@ -61,7 +63,7 @@ class SearchPage extends Component {
                         <input
                             type="text"
                             placeholder="Search by title or author"
-                            onChange={(e)=>this.handleChange(e.target.value)}
+                            onChange={(e) => debounce(500, false, this.handleChange(e.target.value))}
                             value={searchValue}
                         />
 
