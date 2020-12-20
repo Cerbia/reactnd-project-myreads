@@ -4,6 +4,7 @@ import Book from "./Book";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { debounce } from 'throttle-debounce';
+import { has } from 'lodash';
 
 class SearchPage extends Component {
 
@@ -20,7 +21,7 @@ class SearchPage extends Component {
         if(searchValue.length > 0){
             BooksApi.search(searchValue).then( books => {
                 console.log('books', books);
-                if(books.length>0){
+                if(books.length>0 && !has(books, 'error')){
                     const categorizedBooks = books.map(book => {
                         book.shelf = 'none';
                         const myBook = booksOnShelves.filter(shelfBook => book.id === shelfBook.id);
@@ -28,6 +29,10 @@ class SearchPage extends Component {
                     });
                     this.setState(() => ({
                         search: categorizedBooks,
+                    }))
+                } else {
+                    this.setState(() => ({
+                        search: [],
                     }))
                 }
             })
