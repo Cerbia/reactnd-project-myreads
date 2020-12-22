@@ -52,10 +52,8 @@ class SearchPage extends Component {
                 <div className="search-books-bar">
                     <Link
                         to='/'
-                        className='add-contact'
-                    >
-                        <button className="close-search">Close</button>
-                    </Link>
+                        className='add-contact close-search'
+                    >Close</Link>
                     <div className="search-books-input-wrapper">
                         {/*
                     NOTES: The search from BooksAPI is limited to a particular set of search terms.

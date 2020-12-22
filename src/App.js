@@ -16,12 +16,10 @@ class BooksApp extends React.Component {
         this.fetchBooks();
     }
 
-    fetchBooks = () => {
-        BooksApi.getAll().then((data)=> {
-            this.setState(() => ({
-                books: data
-            }))
-        })
+    fetchBooks = async () => {
+        const books = await BooksApi.getAll();
+        this.setState({books});
+
     }
 
     onChangeShelf = (book, shelf) => {
@@ -33,9 +31,9 @@ class BooksApp extends React.Component {
     render() {
     return (
       <div className="app">
-        <Route exact path='/' render={() => (
+        <Route exact path='/'>
             <MyLibrary books={this.state.books} onChangeShelf={this.onChangeShelf}/>
-        )} />
+        </Route>
         <Route path='/search' render={(history) => (
             <SearchPage booksOnShelves={this.state.books} onChangeShelf={this.onChangeShelf}/>
         )} />
